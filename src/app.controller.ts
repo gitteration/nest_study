@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Req, Res, Query, Ip, HttpCode, Redirect } from '@nestjs/common';
+import { Controller, Get, Post, Req, Res, Query, Ip, HttpCode, Redirect, Param, Body } from '@nestjs/common';
 import { Request } from 'express';
 import { AppService } from './app.service';
-import { get } from 'https';
+import { CreateUser, User} from './app.dto';
 
 @Controller('/')
 export class AppController {
@@ -12,20 +12,30 @@ export class AppController {
 
   
   */
-
   // Url('/') Get 요청의 처리
   @Get()
   getHello(): string {
     return this.appService.getHello();
   }
-  
+  /**
+   *   - 쿼리스트링으로 파라미터를 받는 방법은 두 방법이 있다 - 
+   *   1. @Param을 이용하여 파라미터를 하나하나 받는 형식
+   *   2. @Params을 이용하여 파라미터들을 한 번에 객체로 받는 형식
+   *   음.. 받는 파라미터가 3개 이상 넘어가지 않으면 1번째 방법을 이용하는게 좋을 거 같다.
+   */
+
+  @Get('methodParamsOfGet/:id/:contents')
+  getMethodParamsOfGet(@Param('id') id: number, @Param('contents') contents:string): string{
+    return this.appService.getMethodParamsOfGet(id, contents);
+  }
+
   //Url('/start') Get 요청의 처리
   @Get('start')
   // Request 매개변수를 가져올려면 express 모듈에서 가져오면 된다.
   getStart(@Req() req: Request, @Query() query:string, @Ip() ip:string): string{
     // 쿼리 파라미터는 req.query로 넘어온다
     console.log("request:::", req.query);
-    // 하지만 @Query 데코레이션을 이용하면 바로 가져올 수 있다
+    // 하지만 nest에서는 @Query 데코레이션을 이용하면 바로 가져올 수 있다
     console.log("keys::", query);
     // ip
     console.log('ip::', ip)
@@ -64,12 +74,17 @@ export class AppController {
     
   }
   
-
   // Url('/post') Post 요청의 처리
   @Post('post')
   getPost(): string{
     return this.appService.getPost();
   }
+
+  @Post('user/create')
+  getMethodParamsOfPost(@Body() new_user: CreateUser):User{
+    return this.appService.createUser(new_user);
+  }
+
 
 }
 
