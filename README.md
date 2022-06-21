@@ -1,1 +1,4 @@
-nestJS Practice 
+# nestJS Practice 
+### start
+  - npm install
+  - npm run dev
