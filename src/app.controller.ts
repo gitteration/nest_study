@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Req, Res, Query, Ip, HttpCode, Redirect, Param, Body } from '@nestjs/common';
+import { Controller, Get, Post, Req, Res, Query, Ip, HttpCode, Redirect, Param, Body, Render } from '@nestjs/common';
 import { Request } from 'express';
 import { AppService } from './app.service';
 import { CreateUser, User} from './app.dto';
@@ -85,6 +85,10 @@ export class AppController {
     return this.appService.createUser(new_user);
   }
 
-
+  @Get('three')
+  @Render('three1.ejs')
+  testThreeJs(){
+    return 
+  }
 }
 

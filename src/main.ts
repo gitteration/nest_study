@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import {NestExpressApplication} from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { join } from 'path';
 
 
 async function bootstrap() {
@@ -14,7 +15,9 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, swagger_config);
   SwaggerModule.setup('api-document', app, document);
-  
+  app.useStaticAssets(join(__dirname, '..', 'src', 'public'));
+  app.setBaseViewsDir(join(__dirname, '..', 'src', 'views'));
+  app.setViewEngine("ejs");
   
   await app.listen(4000);
 }
